@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Resume Builder</h1>
+    </header>
+    <main>
+        <section id="form-section">
+            <h2>Enter Your Details</h2>
+            <form id="resume-form">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" required>
+
+                <label for="education">Education:</label>
+                <textarea id="education" name="education" rows="4" required></textarea>
+
+                <label for="experience">Work Experience:</label>
+                <textarea id="experience" name="experience" rows="4" required></textarea>
+
+                <label for="skills">Skills:</label>
+                <textarea id="skills" name="skills" rows="3" required></textarea>
+
+                <button type="button" id="preview-btn">Preview Resume</button>
+            </form>
+        </section>
+
+        <section id="preview-section" style="display: none;">
+            <h2>Resume Preview</h2>
+            <div id="resume-preview">
+                <h3 id="preview-name"></h3>
+                <p id="preview-email"></p>
+                <p id="preview-phone"></p>
+                <h4>Education</h4>
+                <p id="preview-education"></p>
+                <h4>Work Experience</h4>
+                <p id="preview-experience"></p>
+                <h4>Skills</h4>
+                <p id="preview-skills"></p>
+            </div>
+            <button id="download-btn">Download PDF</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Resume Builder. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Handle Preview Button Click
+        document.getElementById('preview-btn').addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const education = document.getElementById('education').value;
+            const experience = document.getElementById('experience').value;
+            const skills = document.getElementById('skills').value;
+
+            document.getElementById('preview-name').textContent = name;
+            document.getElementById('preview-email').textContent = email;
+            document.getElementById('preview-phone').textContent = phone;
+            document.getElementById('preview-education').textContent = education;
+            document.getElementById('preview-experience').textContent = experience;
+            document.getElementById('preview-skills').textContent = skills;
+
+            document.getElementById('form-section').style.display = 'none';
+            document.getElementById('preview-section').style.display = 'block';
+        });
+
+        // Handle Download Button Click
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const name = document.getElementById('preview-name').textContent;
+            const email = document.getElementById('preview-email').textContent;
+            const phone = document.getElementById('preview-phone').textContent;
+            const education = document.getElementById('preview-education').textContent;
+            const experience = document.getElementById('preview-experience').textContent;
+            const skills = document.getElementById('preview-skills').textContent;
+
+            doc.setFontSize(16);
+            doc.text('Resume', 105, 10, null, null, 'center');
+
+            doc.setFontSize(12);
+            doc.text(`Name: ${name}`, 10, 30);
+            doc.text(`Email: ${email}`, 10, 40);
+            doc.text(`Phone: ${phone}`, 10, 50);
+
+            doc.text('Education:', 10, 70);
+            doc.text(education, 10, 80);
+
+            doc.text('Work Experience:', 10, 110);
+            doc.text(experience, 10, 120);
+
+            doc.text('Skills:', 10, 150);
+            doc.text(skills, 10, 160);
+
+            doc.save('resume.pdf');
+        });
+    </script>
+</body>
+</html>
